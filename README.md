@@ -1,4 +1,4 @@
-# autotagowner
+# Automatically Tag Virtual Machines in Azure
 
 Python/Flask Web Application that can subscribe to Event Grid and auto-tag the VM or Storage Account with the creator of the object. That is set in it_Owner (per our policy).
 
