@@ -106,6 +106,18 @@ def update():
                 else:
                     return make_response("OK", 200) # On error, just accept lost data?
 
+            # Disk Creation
+            if is_event(json_data[0], event_type=u'Microsoft.Resources.ResourceWriteSuccess',
+                        operation_name=u'Microsoft.Compute/disks/write'):
+                creator = get_creator(json_data[0])
+                id = get_id(json_data[0])
+                subscription = id.split('/')[2]
+                if creator is not None and len(creator) > 0 and resource_apply_tags(id, subscription, u'Microsoft.Compute/disks', {"it_Owner": creator}):
+                    sys.stderr.write("VIRTUAL MACHINE EVENT: RESPONSE 200 *****************" + str(id) + "<br>" + "\n\n")
+                    return make_response("Accepted", 200)
+                else:
+                    return make_response("OK", 200) # On error, just accept lost data?
+
             # Storage Account Creation
             if is_event(json_data[0], event_type=u'Microsoft.Resources.ResourceWriteSuccess',
                         operation_name=u'Microsoft.Storage/storageAccounts/write'):
@@ -187,11 +199,7 @@ def resource_apply_tags(id, subscription, provider, tags):
         current_tags = r.tags
         if 'it_Owner' in current_tags and len(current_tags['it_Owner']) > 0:
             sys.stderr.write("**************it_Owner exists.  Do Nothing. ***************")
-
-            return True
-        if current_tags['it_Owner'] == tags['it_Owner']:
-            sys.stderr.write("**************it_Owner exists.  Do Nothing. ***************")
-            return True
+            return False
     except:
         assert False, "Invalid tags provided."
 
