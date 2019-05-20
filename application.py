@@ -184,6 +184,10 @@ def resource_apply_tags(id, subscription, provider, tags):
     # else:
         # When running on Azure, and managed identity is used to grant tag priviledge.
     # sys.stderr.write("****** USING MSI AUTHENTICATION ***********")
+
+    # I've been unable to dynamically authenticate. If I try, it fails in Azure.
+    # Debugging linux in azure app logstream bearly works. SO, just leaving it
+    # hardcoded.
     creds = MSIAuthentication()
 
     resource_client = ResourceManagementClient(creds, subscription)
