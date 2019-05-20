@@ -177,14 +177,14 @@ def get_creator(msg, key_endswith="identity/claims/name"):
 # to get automatically.
 def resource_apply_tags(id, subscription, provider, tags):
 
-    if "LOCAL_DEBUG" in os.environ and os.environ["LOCAL_DEBUG"] == '1':
-        # When running locally for debug/development
-        sys.stderr.write("****** USING CLI AUTHENTICATION ***********")
-        creds, _ = credentials.get_azure_cli_credentials(resource=None, with_tenant=False)
-    else:
+    # if "LOCAL_DEBUG" in os.environ and os.environ["LOCAL_DEBUG"] == '1':
+    #     # When running locally for debug/development
+    #     sys.stderr.write("****** USING CLI AUTHENTICATION ***********")
+    #     creds, _ = credentials.get_azure_cli_credentials(resource=None, with_tenant=False)
+    # else:
         # When running on Azure, and managed identity is used to grant tag priviledge.
-        sys.stderr.write("****** USING MSI AUTHENTICATION ***********")
-        creds = MSIAuthentication()
+    # sys.stderr.write("****** USING MSI AUTHENTICATION ***********")
+    creds = MSIAuthentication()
 
     resource_client = ResourceManagementClient(creds, subscription)
 
