@@ -177,6 +177,8 @@ def get_creator(msg, key_endswith="identity/claims/name"):
 # to get automatically.
 def resource_apply_tags(id, subscription, provider, tags):
 
+    # NOTE: I've observed that the app serice needs to be restarted once
+    # you add the web app managed identity to the subscription.  Otherwise it_Owner ends up blank.
     if "LOCAL_DEBUG" in os.environ and os.environ["LOCAL_DEBUG"] == '1':
         # When running locally for debug/development
         sys.stderr.write("****** USING CLI AUTHENTICATION ***********")
